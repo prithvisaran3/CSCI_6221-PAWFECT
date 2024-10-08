@@ -15,6 +15,12 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             List {
+                
+                
+                
+                
+                
+                
                 ForEach(items) { item in
                     NavigationLink {
                         Text("Item at 123 \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
