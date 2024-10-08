@@ -16,9 +16,7 @@ struct ContentView: View {
         NavigationSplitView {
             List {
                 
-                
-                
-                
+        
                 
                 
                 ForEach(items) { item in
