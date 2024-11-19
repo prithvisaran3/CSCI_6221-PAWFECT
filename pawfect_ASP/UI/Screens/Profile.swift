@@ -104,46 +104,6 @@ struct ProfileView: View {
                 }
                 
                 Spacer()
-                
-                // Bottom Navigation Bar
-                HStack(spacing: 50) {
-                    Button(action: {
-                        // Home button action
-                    }) {
-                        Image(systemName: "house.fill")
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(primaryColor)
-                    }
-                    
-                    Button(action: {
-                        // Search button action
-                    }) {
-                        Image(systemName: "magnifyingglass")
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(primaryColor)
-                    }
-                    
-                    Button(action: {
-                        // Profile button action
-                    }) {
-                        Image(systemName: "person.fill")
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                            .padding(8)
-                            .background(primaryColor)
-                            .clipShape(Circle())
-                            .foregroundColor(.white)
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.white)
-                .clipShape(Capsule())
-                .padding(.horizontal, 20)
-                .padding(.bottom, 10)
-                .shadow(radius: 5)
             }
             .background(secondaryColor.ignoresSafeArea())
             .navigationBarHidden(true)
