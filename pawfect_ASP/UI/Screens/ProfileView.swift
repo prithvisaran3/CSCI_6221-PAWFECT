@@ -81,6 +81,8 @@ struct ProfileScreen: View {
                 if let newValue = newValue {
                     profileController.loadTransferrable(from: newValue)
                 }
+            }.task{
+                await profileController.getInitialProfile()
             }
 
 
@@ -89,5 +91,5 @@ struct ProfileScreen: View {
 }
 
 #Preview {
-    ProfileView()
+    ProfileScreen()
 }

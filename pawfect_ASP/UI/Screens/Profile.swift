@@ -7,8 +7,12 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @Bindable var profileController = ProfileController()
+    
     let primaryColor = Color(red: 155 / 255, green: 39 / 255, blue: 90 / 255)
     let secondaryColor = Color(red: 254 / 255, green: 211 / 255, blue: 231 / 255)
+    
+    
 
     var body: some View {
         NavigationView {
@@ -44,7 +48,7 @@ struct ProfileView: View {
                             .padding(.trailing, 10)
                         
                         VStack(alignment: .leading) {
-                            Text("Hi, Kristin Watson")
+                            Text("Hi, \(profileController.username)")
                                 .font(.system(size: 20, weight: .bold))
                             
                             Text("user_id")

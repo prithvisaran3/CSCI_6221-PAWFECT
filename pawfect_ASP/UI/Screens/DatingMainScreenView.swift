@@ -18,6 +18,7 @@ struct DatingMainScreenView: View {
     @State var showAlert: Bool = false
     @State var swipeDirection: String = ""
     var body: some View {
+        
         ZStack {
             screenSecondaryColor
                 .edgesIgnoringSafeArea(.all)
@@ -25,7 +26,7 @@ struct DatingMainScreenView: View {
                 if noMoreCards {
                     NavigationView{
                         ZStack {
-                            Color.gray.opacity(0.8)
+                            Color.clear.opacity(0.8)
                                 .edgesIgnoringSafeArea(.all)
                             VStack(spacing: 16) {
                                 Text("Oops!")
@@ -38,15 +39,15 @@ struct DatingMainScreenView: View {
                                     .foregroundColor(.white)
                                     .multilineTextAlignment(.center)
                                 
-                                NavigationLink(destination: MainOnBoardingForm()) {
-                                    Text("Go Back")
+                                
+                                    Text("Try Later")
                                         .fontWeight(.semibold)
                                         .padding(.vertical, 10)
                                         .padding(.horizontal, 20)
                                         .background(screenSecondaryColor)
                                         .foregroundColor(.gray)
                                         .cornerRadius(10)
-                                }
+                                
                             }
                         }
                         .padding(30)

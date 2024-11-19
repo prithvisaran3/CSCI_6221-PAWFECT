@@ -6,6 +6,7 @@ struct ContentView: View {
         Group {
             if isAuthenticated {
                 AppView()
+                
             }else{
                 LoginFormView()
             }
