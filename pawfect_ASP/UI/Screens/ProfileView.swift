@@ -38,11 +38,11 @@ struct ProfileScreen: View {
                     }
                 }
                 Section{
-                    TextField("Username", text: $profileController.username)
+                    TextField("Username", text: $profileController.dogAge)
                         .textContentType(.username)
                         .autocapitalization(.none)
                     
-                    TextField("Full Name", text: $profileController.fullName)
+                    TextField("Full Name", text: $profileController.dogName)
                         .textContentType(.name)
                     
                     TextField("Website", text: $profileController.website)

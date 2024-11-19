@@ -31,7 +31,7 @@ struct NavigationContainerView: View {
             }
             .tag(Tab.chats)
             NavigationView {
-                ProfileScreen()
+                ProfileView()
             }
             .tabItem {
                 Image(systemName: "person.fill")

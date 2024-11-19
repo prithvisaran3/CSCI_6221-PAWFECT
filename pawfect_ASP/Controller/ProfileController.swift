@@ -12,12 +12,16 @@ import PhotosUI
 @MainActor
 @Observable
 class ProfileController{
-    var username = ""
-    var fullName = ""
-    var lastName = ""
-
-
+    var dogName = ""
+    var dogBreed = ""
+    var ownerName = ""
+    var dogAge = ""
+    var dogGender = ""
+    var phoneNumber = ""
+    var address = ""
+    var pinCode = ""
     var website = ""
+    var id = ""
     var isLoading = false
     var imageSelection : PhotosPickerItem?
     var avatarImage : AvatarImage?
@@ -39,9 +43,14 @@ class ProfileController{
                 .execute()
                 .value
             
-            username = profile.username ?? ""
-            fullName = profile.fullName ?? ""
+            dogName = profile.dogName ?? ""
+            ownerName = profile.ownerName ?? ""
+            dogBreed = profile.dogBreed ?? ""
+            dogAge = profile.dogAge ?? ""
+            dogGender = profile.dogGender ?? ""
+            phoneNumber = profile.phoneNumber ?? ""
             website = profile.website ?? ""
+            id = currentUser.id.uuidString
             
             if let avatarURL = profile.avatarURL, !avatarURL.isEmpty{
                 try await downloadImage(path: avatarURL)
@@ -64,7 +73,7 @@ class ProfileController{
                 
                 let currentUser =   try await supabase.auth.session.user
                 
-                let updatedProfile = Profile(username: username, fullName: fullName, website: website, avatarURL: imageURL)
+                let updatedProfile = Profile(dogName: dogName, dogBreed: dogBreed, dogAge: dogAge, dogGender: dogGender, ownerName: ownerName, phoneNumber: phoneNumber, website: website, avatarURL: imageURL)
                 
                 try await supabase.from("profiles")
                     .update(updatedProfile)

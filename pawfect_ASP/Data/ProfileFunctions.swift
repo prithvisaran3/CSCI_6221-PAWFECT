@@ -8,14 +8,22 @@
 import Foundation
 
 struct Profile : Decodable, Encodable{
-    let username: String?
-    let fullName: String?
+    let dogName: String?
+    let dogBreed: String?
+    let dogAge: String?
+    let dogGender: String?
+    let ownerName: String?
+    let phoneNumber: String?
     let website: String?
     let avatarURL: String?
     
     enum CodingKeys: String, CodingKey {
-        case username
-        case fullName="full_name"
+        case dogName="dog_name"
+        case dogBreed="dog_breed"
+        case dogAge="dog_age"
+        case dogGender="dog_gender"
+        case ownerName="owner_name"
+        case phoneNumber="phone_number"
         case website
         case avatarURL = "avatar_url"
     }

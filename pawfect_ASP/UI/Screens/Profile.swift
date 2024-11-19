@@ -11,8 +11,6 @@ struct ProfileView: View {
     
     let primaryColor = Color(red: 155 / 255, green: 39 / 255, blue: 90 / 255)
     let secondaryColor = Color(red: 254 / 255, green: 211 / 255, blue: 231 / 255)
-    
-    
 
     var body: some View {
         NavigationView {
@@ -48,10 +46,10 @@ struct ProfileView: View {
                             .padding(.trailing, 10)
                         
                         VStack(alignment: .leading) {
-                            Text("Hi, \(profileController.username)")
+                            Text("Hi, \(profileController.ownerName)")
                                 .font(.system(size: 20, weight: .bold))
                             
-                            Text("user_id")
+                            Text("\(profileController.id)")
                                 .font(.system(size: 14))
                                 .foregroundColor(.gray)
                         }
@@ -73,15 +71,15 @@ struct ProfileView: View {
                         .padding(.bottom, 5)
 
                     NavigationLink(destination: PetDetailView(
-                        petName: "Charlie",
-                        petBreed: "American Pit Bull Terrier",
-                        petAge: "2 years",
-                        petGender: "Male",
+                        petName: profileController.dogName,
+                        petBreed: profileController.dogBreed,
+                        petAge: profileController.dogAge,
+                        petGender: profileController.dogGender,
                         petDescription: """
                         Charlie  loves to play fetch, go on long walks, and spend time with his family. Charlie has a gentle personality and is great with kids, making him a perfect companion.
                         """
                     )) {
-                        PetCardView(petName: "Charlie", petBreed: "American Pit Bull Terrier", backgroundColor: primaryColor)
+                        PetCardView(petName: profileController.dogName, petBreed: profileController.dogBreed, backgroundColor: primaryColor)
                             .frame(width: 250, height: 300)
                     }
                 }
@@ -89,28 +87,33 @@ struct ProfileView: View {
                 .padding(.top, 8)
                 
                 // Breed Facts Section
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        Text("Breed Facts")
-                            .font(.system(size: 18, weight: .semibold))
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 15) {
-                            FactCardView(fact: "Pit Bulls are known for their strength and loyalty.")
-                            FactCardView(fact: "They are very friendly and affectionate with family.")
-                            FactCardView(fact: "Regular exercise is essential for this breed.")
-                        }
-                        .padding(.horizontal)
-                    }
-                }
+//                VStack(alignment: .leading, spacing: 8) {
+//                    HStack {
+//                        Text("Breed Facts")
+//                            .font(.system(size: 18, weight: .semibold))
+//                        Spacer()
+//                    }
+//                    .padding(.horizontal)
+//                    
+//                    ScrollView(.horizontal, showsIndicators: false) {
+//                        HStack(spacing: 15) {
+//                            FactCardView(fact: "Pit Bulls are known for their strength and loyalty.")
+//                            FactCardView(fact: "They are very friendly and affectionate with family.")
+//                            FactCardView(fact: "Regular exercise is essential for this breed.")
+//                        }
+//                        .padding(.horizontal)
+//                    }
+//                }
                 
                 Spacer()
             }
             .background(secondaryColor.ignoresSafeArea())
             .navigationBarHidden(true)
+            .onAppear {
+                Task {
+                    await profileController.getInitialProfile()
+                }
+            }
         }
     }
 }
