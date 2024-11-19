@@ -14,6 +14,9 @@ import PhotosUI
 class ProfileController{
     var username = ""
     var fullName = ""
+    var lastName = ""
+
+
     var website = ""
     var isLoading = false
     var imageSelection : PhotosPickerItem?
