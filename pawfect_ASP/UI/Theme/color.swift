@@ -4,6 +4,8 @@
 //
 //  Created by Prithvi’s Macbook on 10/8/24.
 //
+import Foundation
+
 
 import Foundation
 import SwiftUI
@@ -13,4 +15,5 @@ struct AppColors {
     static let secondaryColor = Color(red: 254, green: 211, blue: 231)
     static let backgroundColor = Color(red: 254, green: 211, blue: 231)
     static let textColor = Color(red: 254, green: 211, blue: 231)
+
 }
