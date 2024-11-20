@@ -19,7 +19,7 @@ struct DatingMainScreenView: View {
       // The main content of DatingMainScreenView
       private var mainContentView: some View {
           ZStack {
-              Color.gray.opacity(0.1).edgesIgnoringSafeArea(.all) // Background color
+              Color.gray.opacity(0.1).ignoresSafeArea()// Background color
               VStack(alignment: .center) {
                   if noMoreCards {
                       noMoreCardsView()
