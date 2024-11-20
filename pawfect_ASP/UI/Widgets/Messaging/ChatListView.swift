@@ -1,8 +1,11 @@
 import SwiftUI
 
 struct ChatListView: View {
+    
+    @State private var chatController = MatchedListController()
+    
     let pets = [
-        Pet(name: "Abelene", imageName: "pet1"),
+        Pet(name: "", imageName: "pet1"),
         Pet(name: "Charlie", imageName: "pet2"),
         Pet(name: "Bella", imageName: "pet3")
     ]

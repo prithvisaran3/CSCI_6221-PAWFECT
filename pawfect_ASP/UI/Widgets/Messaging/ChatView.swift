@@ -10,7 +10,9 @@ struct ChatView: View {
     @State private var messageText = ""
     @State private var showPhotoPicker = false
     @State private var selectedImage: UIImage?
-
+    @State private var chatController = ChatController()
+    
+//    @State private var matchController = MatchController()
     var body: some View {
         
         VStack {
@@ -109,6 +111,11 @@ struct ChatView: View {
             .padding()
             .background(Color.white)
         }
+        .onAppear {
+                   Task {
+                       await chatController.fetchChatData()  // Fetch chat history
+                   }
+               }
         .background(Color.white.ignoresSafeArea())
         .navigationTitle("")
         .navigationBarHidden(true)
