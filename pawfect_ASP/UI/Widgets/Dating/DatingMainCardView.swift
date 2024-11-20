@@ -15,6 +15,12 @@ struct DatingMainCardView: View {
     @Binding var showAlert: Bool
     @Binding var swipeDirection: String
     @State var index: Int
+    
+    let validIDs = [
+                "4d2c8208-eed5-477f-8d8b-6112758adb53",
+                "7c6a44fd-c6f2-4792-b986-bde059fe4f6c",
+                "19199b75-a869-4828-bd5b-8e0720338d7b"
+            ]
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -53,7 +59,7 @@ struct DatingMainCardView: View {
         .alert(isPresented: $showAlert) {
             Alert(
                 title: Text("Match Found!"),
-                message: Text("You found a match with \(dogName)!"),
+                message: Text("You Found a Match!"),
                 dismissButton: .default(Text("Awesome!"))
             )
         }
@@ -74,6 +80,20 @@ extension DatingMainCardView {
     func swipeRight() {
         xOffset = 500
         degrees = -12
+        swipeDirection = "Right"
+        
+        if index < remainingCards.count {
+            let matchedProfile = remainingCards[index]
+            
+           
+            
+            // Check for the hardcoded ID match and show alert
+            if validIDs.contains(matchedProfile.id) {
+                homeController.matchUser = matchedProfile.id
+                ChatManager.shared.addMatch(profile: matchedProfile)
+                showAlert = true // Show alert only for specific ID
+            }
+        }
     }
 
     func OnDragEnd(_ value: _ChangedGesture<DragGesture>.Value) {
@@ -84,13 +104,6 @@ extension DatingMainCardView {
         }
         if width >= 200 {
             swipeRight()
-            swipeDirection = "Right"
-
-            // Check for the hardcoded ID match
-            if index < remainingCards.count, remainingCards[index].id == "2dbcfd65-71bc-4aa0-a0d8-cfb2b6ff75f7" {
-                homeController.matchUser = remainingCards[index].id
-                showAlert = true // Show alert only for specific ID
-            }
         } else {
             swipeLeft()
             swipeDirection = "Left"
@@ -110,31 +123,5 @@ extension DatingMainCardView {
                 noMoreCards = true
             }
         }
-    }
-}
-
-struct DatingMainCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        @State var noMoreCards = false
-        @State var remainingCards: [PetProfile] = [
-            PetProfile(id: "match-id", dogName: "Yeontan", dogBreed: "Labrador Retriever", dogAge: "2", dogGender: "Male", ownerName: "John Doe", petBio: "Friendly and loves to play!", image1: "dog", image2: "dog1", image3: "dog2"),
-            PetProfile(id: "2", dogName: "Buddy", dogBreed: "Golden Retriever", dogAge: "3", dogGender: "Female", ownerName: "Jane Smith", petBio: "Loyal and friendly!", image1: "dog", image2: "dog1", image3: "dog2")
-        ]
-        @State var showAlert = false
-        @State var swipeDirection = ""
-
-        return DatingMainCardView(
-            dogName: "Yeontan",
-            dogBreed: "Labrador Retriever",
-            age: 2,
-            gender: "Male",
-            currentImageIndex: 0,
-            imageNames: ["dog", "Dog-1", "Dog-2", "Dog-3"],
-            noMoreCards: $noMoreCards,
-            remainingCards: $remainingCards,
-            showAlert: $showAlert,
-            swipeDirection: $swipeDirection,
-            index: 0
-        )
     }
 }

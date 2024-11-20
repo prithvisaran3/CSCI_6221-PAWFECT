@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ChatListView: View {
-    @StateObject var chatController = HomeController() // Instantiate HomeController
+    @StateObject var chatManager = ChatManager.shared // Observe the shared ChatManager
     
     var body: some View {
         NavigationView {
@@ -14,7 +14,7 @@ struct ChatListView: View {
 
                 ScrollView {
                     VStack(spacing: 20) {
-                        ForEach(chatController.chatProfile) { pet in
+                        ForEach(chatManager.matchedProfiles) { pet in
                             NavigationLink(destination: ChatView(pet: Pet(name: pet.dogName ?? "Unknown", imageName: pet.image1 ?? "placeholder", phone: pet.phoneNumber ?? "N/A"))) {
                                 HStack {
                                     AsyncImage(url: URL(string: pet.image1 ?? "")) { phase in
@@ -56,11 +56,6 @@ struct ChatListView: View {
                     .padding()
                 }
             }
-            .onAppear {
-                Task {
-                    await chatController.matchChat()
-                }
-            }
             .background(Color.white.ignoresSafeArea())
         }
     }
@@ -71,10 +66,4 @@ struct Pet: Identifiable {
     let name: String
     let imageName: String
     let phone: String
-}
-
-struct ChatListView_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatListView()
-    }
 }
