@@ -2,12 +2,18 @@ import SwiftUI
 
 struct LoginFormView: View {
     @Bindable var authController = AuthController()
-  
-    
+
     var body: some View {
         NavigationView{
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 15) {
+                Image("applogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200) // Adjusted for better proportionality
+                    .padding(.horizontal, 90)
+
                 HStack {
+
                     Spacer()
                     Text("Hey There!")
                         .font(.largeTitle)
@@ -29,7 +35,6 @@ struct LoginFormView: View {
                         )
                     Spacer()
                 }
-                
                 HStack(alignment: .center, spacing: 8) {
                     Image(systemName: "envelope")
                         .foregroundColor(Color("PrimaryColor"))
@@ -41,17 +46,17 @@ struct LoginFormView: View {
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(10)
                 }
-                
-                HStack(alignment: .center, spacing: 8) {
+
+                HStack(alignment: .center, spacing: 8) { // Adjust spacing if needed
                     Image(systemName: "key")
                         .foregroundColor(Color("PrimaryColor"))
+                        .padding(.horizontal,5)
                     SecureField("Enter your password", text: $authController.userPassword)
                         .textContentType(.password)
                         .padding()
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(10)
                 }
-                
                 Button(action: {
                     Task {
                         await authController.login()
@@ -107,9 +112,7 @@ struct LoginFormView: View {
                     dismissButton: .default(Text("Try Again"))
                 )
             })
-            
         }
-        
     }
 }
 
