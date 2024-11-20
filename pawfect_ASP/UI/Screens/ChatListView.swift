@@ -1,10 +1,12 @@
 import SwiftUI
 
 struct ChatListView: View {
+    
+    
     let pets = [
-        Pet(name: "Abelene", imageName: "pet1"),
-        Pet(name: "Charlie", imageName: "pet2"),
-        Pet(name: "Bella", imageName: "pet3")
+        Pet(name: "Mona", imageName: "dog", phone: "7038983773"),
+        Pet(name: "Charlie", imageName: "Dog-1", phone: "7098983773"),
+        Pet(name: "Bella", imageName: "Dog-2", phone: "7038983773")
     ]
 
     var body: some View {
@@ -54,6 +56,7 @@ struct Pet: Identifiable {
     let id = UUID()
     let name: String
     let imageName: String
+    let phone : String
 }
 
 struct ChatListView_Previews: PreviewProvider {
