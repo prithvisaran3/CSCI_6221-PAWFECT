@@ -10,12 +10,6 @@ import SwiftData
 
 @main
 struct pawfect_ASPApp: App {
-    var body: some Scene {
-        WindowGroup {
-            SplashScreenView()
-        }
-    }
-}
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -46,4 +40,4 @@ struct pawfect_ASPApp: App {
         }
         .modelContainer(sharedModelContainer)
     }
-
+}
