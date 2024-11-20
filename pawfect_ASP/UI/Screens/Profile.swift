@@ -98,9 +98,9 @@ struct ProfileView: View {
 //                }
                 Button(action: {
                     Task {
-//                        await authController.logout()
+                        await authController.logout()
                         // Handle navigation to the login view here
-                        await homeController.fetchAllPets()
+//                        await homeController.fetchAllPets()
                     }
                 }) {
                     Text("Logout")
