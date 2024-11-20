@@ -8,7 +8,7 @@ struct DatingMainCardView: View {
     @State var age: Int
     @State var gender: String
     @State var currentImageIndex: Int = 0
-    @State var imageNames: [String]  // List of images to display (Updated variable name for clarity)
+    @State var imageNames: [String]
     @Binding var noMoreCards: Bool
     @Binding var remainingCards: [PetProfile]
     @Binding var showAlert: Bool
@@ -18,7 +18,6 @@ struct DatingMainCardView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             ZStack(alignment: .top) {
-                // Display the current image from the list of images
                 DatingCardView(imageName: imageNames[currentImageIndex])
                     .overlay(
                         ImageScrollingOverlay(
@@ -50,6 +49,13 @@ struct DatingMainCardView: View {
                 OnDragEnd(value)
             })
         )
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Match Found!"),
+                message: Text("You found a match with \(dogName)!"),
+                dismissButton: .default(Text("Awesome!"))
+            )
+        }
     }
 }
 
@@ -78,12 +84,16 @@ extension DatingMainCardView {
         if width >= 200 {
             swipeRight()
             swipeDirection = "Right"
-            showAlert = true
+
+            // Check for the hardcoded ID match
+            if index < remainingCards.count, remainingCards[index].id == "bad325d7-9a1d-456a-a959-4fdca3ddc22a" {
+                showAlert = true // Show alert only for specific ID
+            }
         } else {
             swipeLeft()
             swipeDirection = "Left"
-            showAlert = true
         }
+        
         if noMoreCards {
             return
         } else {
@@ -105,7 +115,8 @@ struct DatingMainCardView_Previews: PreviewProvider {
     static var previews: some View {
         @State var noMoreCards = false
         @State var remainingCards: [PetProfile] = [
-            PetProfile(id: "1", dogName: "Yeontan", dogBreed: "Labrador Retriever", dogAge: "2", dogGender: "Male", ownerName: "John Doe", petBio: "Friendly and loves to play!", image1: "dog")
+            PetProfile(id: "match-id", dogName: "Yeontan", dogBreed: "Labrador Retriever", dogAge: "2", dogGender: "Male", ownerName: "John Doe", petBio: "Friendly and loves to play!", image1: "dog", image2: "dog1", image3: "dog2"),
+            PetProfile(id: "2", dogName: "Buddy", dogBreed: "Golden Retriever", dogAge: "3", dogGender: "Female", ownerName: "Jane Smith", petBio: "Loyal and friendly!", image1: "dog", image2: "dog1", image3: "dog2")
         ]
         @State var showAlert = false
         @State var swipeDirection = ""

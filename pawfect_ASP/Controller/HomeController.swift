@@ -41,6 +41,7 @@ struct PetProfile: Codable, Identifiable {
     var image3: String?
     var image4: String?
 
+
     enum CodingKeys: String, CodingKey {
         case id, dogName = "dog_name", dogBreed = "dog_breed", dogAge = "dog_age", dogGender = "dog_gender", ownerName = "owner_name", petBio = "dog_bio", image1 = "dog_pic1", image2 = "dog_pic2", image3 = "dog_pic3", image4 = "dog_pic4"
     }
