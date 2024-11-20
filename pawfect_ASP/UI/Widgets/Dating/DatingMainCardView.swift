@@ -1,70 +1,53 @@
-//
-//  DatingMainCardView.swift
-//  pawfect_ASP
-//
-//  Created by Hidhayath Nisha Mohamed Idris on 11/12/24.
-//
-
 import SwiftUI
 
 struct DatingMainCardView: View {
     @State private var degrees: Double = 0
     @State private var xOffset: Double = 0
-    @State private var dogName: String
-    @State private var dogBreed: String
-    @State private var age: Int
-    @State private var gender: String
-    @State private var currentImageIndex: Int = 0
-    @State private var imageName: [String]
+    @State var dogName: String
+    @State var dogBreed: String
+    @State var age: Int
+    @State var gender: String
+    @State var currentImageIndex: Int = 0
+    @State var imageNames: [String]  // List of images to display (Updated variable name for clarity)
     @Binding var noMoreCards: Bool
-    @Binding var remainingCards: [String]
-    @Binding private var showAlert: Bool
-    @Binding private var swipeDirection: String
-    @State var index: Int = 0
-    init(imageName: [String], dogName: String, dogBreed: String, age: Int, gender: String, currentImageIndex: Int, noMoreCards: Binding<Bool>, remainingCards: Binding<[String]>, index: Int, showAlert: Binding<Bool>, swipeDirection: Binding<String>) {
-        self.dogName = dogName
-        self.dogBreed = dogBreed
-        self.age = age
-        self.gender = gender
-        self.imageName = imageName
-        self.currentImageIndex = currentImageIndex
-        _remainingCards = remainingCards
-        _noMoreCards = noMoreCards
-        self.index = index
-        _swipeDirection = swipeDirection
-        _showAlert = showAlert
-    }
+    @Binding var remainingCards: [PetProfile]
+    @Binding var showAlert: Bool
+    @Binding var swipeDirection: String
+    @State var index: Int
+
     var body: some View {
-        ZStack(alignment: .bottom)
-        {
-            
-            ZStack(alignment: .top){
-                
-                DatingCardView(imageName: imageName[currentImageIndex])
+        ZStack(alignment: .bottom) {
+            ZStack(alignment: .top) {
+                // Display the current image from the list of images
+                DatingCardView(imageName: imageNames[currentImageIndex])
                     .overlay(
                         ImageScrollingOverlay(
-                            currentImageIndex: $currentImageIndex, imageCount: imageName.count
+                            currentImageIndex: $currentImageIndex,
+                            imageCount: imageNames.count
                         )
                     )
-                DatingUserCardsTapIndicator(currentImageIndex: currentImageIndex, imageCount: imageName.count)
+                DatingUserCardsTapIndicator(currentImageIndex: currentImageIndex, imageCount: imageNames.count)
                     .padding(.all, 10)
             }
             UserInfoView(
-                dogName: dogName, dogBreed: dogBreed,  age: age, gender: gender
+                dogName: dogName,
+                dogBreed: dogBreed,
+                age: age,
+                gender: gender
             )
         }
-        .frame(width: screenWidth-20,height: screenHeight/1.3)
+        .frame(width: screenWidth - 20, height: screenHeight / 1.3)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .offset(x: xOffset)
         .rotationEffect(.degrees(degrees))
         .gesture(
-            DragGesture().onChanged({
-                value in withAnimation(.snappy){
+            DragGesture().onChanged({ value in
+                withAnimation(.snappy) {
                     xOffset = value.translation.width
-                    degrees = Double(value.translation.width/25)
+                    degrees = Double(value.translation.width / 25)
                 }
-            }).onEnded({
-                value in OnDragEnd(value)
+            }).onEnded({ value in
+                OnDragEnd(value)
             })
         )
     }
@@ -75,19 +58,17 @@ extension DatingMainCardView {
         xOffset = 0
         degrees = 0
     }
-    
+
     func swipeLeft() {
         xOffset = -500
         degrees = 12
     }
-    
+
     func swipeRight() {
         xOffset = 500
         degrees = -12
     }
-}
 
-extension DatingMainCardView {
     func OnDragEnd(_ value: _ChangedGesture<DragGesture>.Value) {
         let width = value.translation.width
         if abs(width) < 200 {
@@ -98,36 +79,49 @@ extension DatingMainCardView {
             swipeRight()
             swipeDirection = "Right"
             showAlert = true
-        }
-        else
-        {
+        } else {
             swipeLeft()
             swipeDirection = "Left"
             showAlert = true
         }
         if noMoreCards {
             return
-        }
-        else {
+        } else {
             removeCard(index: index)
         }
     }
-}
 
-extension DatingMainCardView {
     private func removeCard(index: Int) {
-        remainingCards.remove(at: index)
-        
-        if remainingCards.isEmpty {
-            noMoreCards = true
+        if index < remainingCards.count {
+            remainingCards.remove(at: index)
+            if remainingCards.isEmpty {
+                noMoreCards = true
+            }
         }
     }
 }
 
-#Preview {
-    @Previewable @State var noMoreCards: Bool = false
-    @Previewable @State var remainingCards: [String] = ["User 1", "User 2", "User 3"]
-    @Previewable @State var showAlert: Bool = false
-    @Previewable @State var swipeDirection: String = ""
-    DatingMainCardView(imageName: ["dog", "Dog-1", "Dog-2", "Dog-3"], dogName: "Yeontan", dogBreed: "Labrador Retriever", age: 22, gender: "Male", currentImageIndex: 0, noMoreCards: $noMoreCards, remainingCards: $remainingCards, index: 0, showAlert: $showAlert, swipeDirection: $swipeDirection)
+struct DatingMainCardView_Previews: PreviewProvider {
+    static var previews: some View {
+        @State var noMoreCards = false
+        @State var remainingCards: [PetProfile] = [
+            PetProfile(id: "1", dogName: "Yeontan", dogBreed: "Labrador Retriever", dogAge: "2", dogGender: "Male", ownerName: "John Doe", petBio: "Friendly and loves to play!", avatarURL: "dog")
+        ]
+        @State var showAlert = false
+        @State var swipeDirection = ""
+
+        return DatingMainCardView(
+            dogName: "Yeontan",
+            dogBreed: "Labrador Retriever",
+            age: 2,
+            gender: "Male",
+            currentImageIndex: 0,
+            imageNames: ["dog", "Dog-1", "Dog-2", "Dog-3"],
+            noMoreCards: $noMoreCards,
+            remainingCards: $remainingCards,
+            showAlert: $showAlert,
+            swipeDirection: $swipeDirection,
+            index: 0
+        )
+    }
 }

@@ -8,6 +8,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @Bindable var profileController = ProfileController()
+    @StateObject var homeController = HomeController()
     @Bindable var authController  = AuthController()
     
     let primaryColor = Color(red: 155 / 255, green: 39 / 255, blue: 90 / 255)
@@ -97,8 +98,9 @@ struct ProfileView: View {
 //                }
                 Button(action: {
                     Task {
-                        await authController.logout()
+//                        await authController.logout()
                         // Handle navigation to the login view here
+                        await homeController.fetchAllPets()
                     }
                 }) {
                     Text("Logout")

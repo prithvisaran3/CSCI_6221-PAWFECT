@@ -1,34 +1,21 @@
-//
-//  LikeDislikeButton.swift
-//  pawfect_ASP
-//
-//  Created by Hidhayath Nisha Mohamed Idris on 11/15/24.
-//
-
 import SwiftUI
-import SwiftData
 
 struct LikeDislikeButton: View {
     @Binding var showAlert: Bool
     @Binding var showDirection: String
     @State private var isPressedLeft: Bool = false
     @State private var isPressedRight: Bool = false
-    @Binding var remainingCards: [String]
+    @Binding var remainingCards: [PetProfile]
     @Binding var noMoreCards: Bool
     @State var index: Int
-    init(showAlert: Binding<Bool>, showDirection: Binding<String>, remainingCards: Binding<[String]>, index: Int, noMoreCards: Binding<Bool>) {
-        _showAlert = showAlert
-        _showDirection = showDirection
-        _remainingCards = remainingCards
-        self.index = index
-        _noMoreCards = noMoreCards
-    }
-    public var body: some View {
-        HStack(alignment: .center){
+
+    var body: some View {
+        HStack(alignment: .center) {
+            // Dislike Button
             Image(systemName: "xmark")
                 .font(.largeTitle)
                 .foregroundColor(.green)
-                .frame(width: screenWidth/6, height: screenWidth/6)
+                .frame(width: screenWidth / 6, height: screenWidth / 6)
                 .background(Circle().fill(Color.white))
                 .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 5)
                 .scaleEffect(isPressedLeft ? 0.9 : 1.0)
@@ -42,10 +29,12 @@ struct LikeDislikeButton: View {
                         showDirection = "Left"
                     }
                 }
+
+            // Like Button
             Image(systemName: "heart.fill")
                 .font(.largeTitle)
                 .foregroundColor(.red)
-                .frame(width: screenWidth/6, height: screenWidth/6)
+                .frame(width: screenWidth / 6, height: screenWidth / 6)
                 .background(Circle().fill(Color.white))
                 .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 5)
                 .scaleEffect(isPressedRight ? 0.9 : 1.0)
@@ -60,29 +49,41 @@ struct LikeDislikeButton: View {
                 }
         }
     }
-}
 
-
-extension LikeDislikeButton {
     private func removeCard(index: Int) {
-        remainingCards.remove(at: index)
-        if remainingCards.isEmpty {
-            noMoreCards = true
+        if index < remainingCards.count {
+            remainingCards.remove(at: index)
+            if remainingCards.isEmpty {
+                noMoreCards = true
+            }
         }
     }
 }
 
+struct LikeDislikeButton_Previews: PreviewProvider {
+    static var previews: some View {
+        @State var showAlert = false
+        @State var swipeDirection = ""
+        @State var remainingCards: [PetProfile] = [
+            PetProfile(
+                id: "1",
+                dogName: "Yeontan",
+                dogBreed: "Labrador Retriever",
+                dogAge: "2",
+                dogGender: "Male",
+                ownerName: "John Doe",
+                petBio: "Friendly and loves to play!",
+                avatarURL: "dog"
+            )
+        ]
+        @State var noMoreCards = false
 
-#Preview() {
-    @Previewable @State var showAlert: Bool = false
-    @Previewable @State var swipeDirection: String = ""
-    @Previewable @State var remainingCards: [String] = ["User 1", "User 2", "User 3"]
-    @Previewable @State var noMoreCards: Bool = false
-    LikeDislikeButton(
-        showAlert: $showAlert,
-        showDirection: $swipeDirection,
-        remainingCards: $remainingCards,
-        index: 0,
-        noMoreCards: $noMoreCards//this wont do any change for now.
-    )
+        return LikeDislikeButton(
+            showAlert: $showAlert,
+            showDirection: $swipeDirection,
+            remainingCards: $remainingCards,
+            noMoreCards: $noMoreCards,  // Moved `noMoreCards` before `index` to match the initializer
+            index: 0
+        )
+    }
 }
