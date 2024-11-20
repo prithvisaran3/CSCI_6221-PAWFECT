@@ -25,6 +25,10 @@ class ProfileController{
     var isLoading = false
     var imageSelection : PhotosPickerItem?
     var avatarImage : AvatarImage?
+    var dog_pic1 = ""
+    var dog_pic2 = ""
+    var dog_pic3 = ""
+    var dog_pic4 = ""
     
     func toggleLoadingState(){
         withAnimation{
@@ -51,6 +55,12 @@ class ProfileController{
             phoneNumber = profile.phoneNumber ?? ""
             id = currentUser.id.uuidString
             dogBio = profile.dogBio ?? ""
+            dog_pic1 = profile.dog1 ?? ""
+            dog_pic2 = profile.dog2 ?? ""
+
+            dog_pic3 = profile.dog3 ?? ""
+            dog_pic4 = profile.dog4 ?? ""
+
             
             if let avatarURL = profile.avatarURL, !avatarURL.isEmpty{
                 try await downloadImage(path: avatarURL)
@@ -73,7 +83,7 @@ class ProfileController{
                 
                 let currentUser =   try await supabase.auth.session.user
                 
-                let updatedProfile = Profile(dogName: dogName, dogBreed: dogBreed, dogAge: dogAge, dogGender: dogGender, ownerName: ownerName, phoneNumber: phoneNumber, avatarURL: imageURL,dogBio: dogBio)
+                let updatedProfile = Profile(dogName: dogName, dogBreed: dogBreed, dogAge: dogAge, dogGender: dogGender, ownerName: ownerName, phoneNumber: phoneNumber, avatarURL: imageURL,dogBio: dogBio, dog1: dog_pic1, dog2: dog_pic2, dog3: dog_pic3, dog4: dog_pic4)
                 
                 try await supabase.from("users")
                     .update(updatedProfile)
