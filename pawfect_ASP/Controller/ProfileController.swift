@@ -18,10 +18,9 @@ class ProfileController{
     var dogAge = ""
     var dogGender = ""
     var phoneNumber = ""
-    var petBio = ""
+    var dogBio = ""
     var address = ""
     var pinCode = ""
-    var website = ""
     var id = ""
     var isLoading = false
     var imageSelection : PhotosPickerItem?
@@ -37,7 +36,7 @@ class ProfileController{
         do{
             let currentUser =   try await supabase.auth.session.user
             let profile: Profile = try await supabase
-                .from("profiles")
+                .from("users")
                 .select()
                 .eq("id", value: currentUser.id)
                 .single()
@@ -50,9 +49,8 @@ class ProfileController{
             dogAge = profile.dogAge ?? ""
             dogGender = profile.dogGender ?? ""
             phoneNumber = profile.phoneNumber ?? ""
-            website = profile.website ?? ""
             id = currentUser.id.uuidString
-            petBio = profile.petBio ?? ""
+            dogBio = profile.dogBio ?? ""
             
             if let avatarURL = profile.avatarURL, !avatarURL.isEmpty{
                 try await downloadImage(path: avatarURL)
@@ -75,9 +73,9 @@ class ProfileController{
                 
                 let currentUser =   try await supabase.auth.session.user
                 
-                let updatedProfile = Profile(dogName: dogName, dogBreed: dogBreed, dogAge: dogAge, dogGender: dogGender, ownerName: ownerName, phoneNumber: phoneNumber, website: website, avatarURL: imageURL,petBio: petBio)
+                let updatedProfile = Profile(dogName: dogName, dogBreed: dogBreed, dogAge: dogAge, dogGender: dogGender, ownerName: ownerName, phoneNumber: phoneNumber, avatarURL: imageURL,dogBio: dogBio)
                 
-                try await supabase.from("profiles")
+                try await supabase.from("users")
                     .update(updatedProfile)
                     .eq("id", value: currentUser.id)
                     .execute()

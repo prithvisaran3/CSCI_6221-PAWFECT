@@ -44,10 +44,6 @@ struct ProfileScreen: View {
                     
                     TextField("Full Name", text: $profileController.dogName)
                         .textContentType(.name)
-                    
-                    TextField("Website", text: $profileController.website)
-                        .textContentType(.URL)
-                        .autocapitalization(.none)
                         
                 }
                 

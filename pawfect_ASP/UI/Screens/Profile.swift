@@ -8,6 +8,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @Bindable var profileController = ProfileController()
+    @Bindable var authController  = AuthController()
     
     let primaryColor = Color(red: 155 / 255, green: 39 / 255, blue: 90 / 255)
     let secondaryColor = Color(red: 254 / 255, green: 211 / 255, blue: 231 / 255)
@@ -17,20 +18,12 @@ struct ProfileView: View {
             VStack(alignment: .center, spacing: 20) {
                 // Header
                 HStack {
-                    Image(systemName: "line.horizontal.3")
-                        .font(.title2)
-                        .foregroundColor(primaryColor)
-                    
-                    Spacer()
+                   
                     
                     Text("Profile")
                         .font(.system(size: 24, weight: .bold))
                     
-                    Spacer()
                     
-                    Image(systemName: "bell")
-                        .font(.title2)
-                        .foregroundColor(primaryColor)
                 }
                 .padding(.horizontal)
                 
@@ -75,7 +68,7 @@ struct ProfileView: View {
                         petBreed: profileController.dogBreed,
                         petAge: profileController.dogAge,
                         petGender: profileController.dogGender,
-                        petDescription: profileController.petBio
+                        petDescription: profileController.dogBio
                     )) {
                         PetCardView(petName: profileController.dogName, petBreed: profileController.dogBreed, backgroundColor: primaryColor)
                             .frame(width: 250, height: 300)
@@ -102,7 +95,23 @@ struct ProfileView: View {
 //                        .padding(.horizontal)
 //                    }
 //                }
-                
+                Button(action: {
+                    Task {
+                        await authController.logout()
+                        // Handle navigation to the login view here
+                    }
+                }) {
+                    Text("Logout")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(primaryColor)
+                        .cornerRadius(10)
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 30)
+
                 Spacer()
             }
             .background(secondaryColor.ignoresSafeArea())
@@ -110,6 +119,7 @@ struct ProfileView: View {
             .onAppear {
                 Task {
                     await profileController.getInitialProfile()
+//                    await authController.logout()
                 }
             }
         }

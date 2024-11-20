@@ -9,6 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct DatingMainScreenView: View {
+    @ObservedObject var homeController = HomeController()
+
+    
+    
     @State var users: [String] = ["User 1", "User 2", "User 3"]
     @State var userImages: [[String]] = [["dog", "Dog-1", "Dog-2", "Dog-3"], ["Dog-1", "dog", "Dog-2", "Dog-3"], ["dog", "Dog-3", "dog", "Dog-3"]]
     @State var breeds: [String] = ["Puppy", "Labrador Retriever", "Pomeranian"]
@@ -74,6 +78,12 @@ struct DatingMainScreenView: View {
                 
             }
             .frame(width: screenWidth - 20, height: screenHeight / 3)
+        }
+        .onAppear(){
+            Task{
+                await homeController.fetchAllPets()
+                
+            }
         }
     }
 }

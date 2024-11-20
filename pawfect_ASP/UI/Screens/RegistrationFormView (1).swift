@@ -1,21 +1,10 @@
 import SwiftUI
 
 struct RegistrationFormView: View {
-    // Shared State Variables
-    @State private var dogName: String = ""
-//    @State private var medicalRecords: String = ""
-    @State private var ownerName: String = ""
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var confirmPassword: String = ""
-    @State private var selectedBreed: String = "Select Breed"
-    @State private var age: String = ""
-    @State private var phoneNumber: String = ""
-    @State private var phoneNumberValid: Bool = true
+    @StateObject var authController = AuthController()  // Create the StateObject
+
     @State private var isPasswordVisible: Bool = false
     @State private var isConfirmPasswordVisible: Bool = false
-    @State private var selectedGender: String = ""
-    @State private var bio: String = ""
     let breeds = ["Select Breed", "Labrador", "German Shepherd", "Bulldog", "Beagle", "Poodle"]
     
     var body: some View {
@@ -34,13 +23,13 @@ struct RegistrationFormView: View {
                         .foregroundColor(screenSecondaryColor)
                     
                     VStack(spacing: 15) {
-                        TextField("Owner Name", text: $ownerName)
+                        TextField("Owner Name", text: $authController.ownerName)
                             .textFieldStyle(PlainTextFieldStyle())
                             .padding()
                             .background(Color.white)
                             .cornerRadius(8)
                         
-                        TextField("Email", text: $email)
+                        TextField("Email", text: $authController.signUpEmail)
                             .textFieldStyle(PlainTextFieldStyle())
                             .padding()
                             .background(Color.white)
@@ -48,12 +37,11 @@ struct RegistrationFormView: View {
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
                         
-                        
                         HStack {
                             if isPasswordVisible {
-                                TextField("Password", text: $password)
+                                TextField("Password", text: $authController.signUpPassword)
                             } else {
-                                SecureField("Password", text: $password)
+                                SecureField("Password", text: $authController.signUpPassword)
                             }
                             Button(action: {
                                 isPasswordVisible.toggle()
@@ -67,12 +55,11 @@ struct RegistrationFormView: View {
                         .background(Color.white)
                         .cornerRadius(8)
                         
-                        
                         HStack {
                             if isConfirmPasswordVisible {
-                                TextField("Confirm Password", text: $confirmPassword)
+                                TextField("Confirm Password", text: $authController.confirmPassword)
                             } else {
-                                SecureField("Confirm Password", text: $confirmPassword)
+                                SecureField("Confirm Password", text: $authController.confirmPassword)
                             }
                             Button(action: {
                                 isConfirmPasswordVisible.toggle()
@@ -91,14 +78,7 @@ struct RegistrationFormView: View {
                     .cornerRadius(16)
                     .shadow(color: .gray.opacity(0.4), radius: 8, x: 0, y: 4)
                     
-                    
-                    NavigationLink(destination: RegistrationAdditionalView(
-                        selectedBreed: $selectedBreed,
-                        age: $age,
-                        phoneNumber: $phoneNumber,
-                        phoneNumberValid: $phoneNumberValid,
-                        dogName: $dogName, selectedGender: $selectedGender, bio: $bio, breeds: breeds
-                    )) {
+                    NavigationLink(destination: RegistrationAdditionalView(authController: authController, breeds: breeds)) {
                         Text("Next")
                             .font(.headline)
                             .padding()
@@ -112,13 +92,5 @@ struct RegistrationFormView: View {
                 .padding(.horizontal, 20)
             }
         }
-    }
-}
-
-
-
-struct RegistrationFormView_Previews: PreviewProvider {
-    static var previews: some View {
-        RegistrationFormView()
     }
 }
