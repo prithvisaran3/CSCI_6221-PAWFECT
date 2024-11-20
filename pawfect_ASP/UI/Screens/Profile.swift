@@ -69,7 +69,12 @@ struct ProfileView: View {
                         petBreed: profileController.dogBreed,
                         petAge: profileController.dogAge,
                         petGender: profileController.dogGender,
-                        petDescription: profileController.dogBio
+                        petDescription: profileController.dogBio,
+                        dog1: profileController.dog_pic1,
+                        dog2: profileController.dog_pic2,
+                        dog3: profileController.dog_pic3,
+                        dog4: profileController.dog_pic4
+                        
                     )) {
                         PetCardView(petName: profileController.dogName, petBreed: profileController.dogBreed, backgroundColor: primaryColor)
                             .frame(width: 250, height: 300)
@@ -177,11 +182,30 @@ struct PetDetailView: View {
     var petAge: String
     var petGender: String
     var petDescription: String
+    var dog1: String
+    var dog2: String
+    var dog3: String
+    var dog4: String
+    
 
     let primaryColor = Color(red: 155 / 255, green: 39 / 255, blue: 90 / 255)
     let secondaryColor = Color(red: 254 / 255, green: 211 / 255, blue: 231 / 255)
 
-    let petImages: [String] = ["dog1", "dog2", "dog3", "dog4"] // Replace with actual image names
+    var petImages: [String]
+
+        init(petName: String, petBreed: String, petAge: String, petGender: String, petDescription: String, dog1: String, dog2: String, dog3: String, dog4: String) {
+            self.petName = petName
+            self.petBreed = petBreed
+            self.petAge = petAge
+            self.petGender = petGender
+            self.petDescription = petDescription
+            self.dog1 = dog1
+            self.dog2 = dog2
+            self.dog3 = dog3
+            self.dog4 = dog4
+            self.petImages = [dog1, dog2, dog3, dog4]
+        }
+
 
     var body: some View {
         ScrollView{
