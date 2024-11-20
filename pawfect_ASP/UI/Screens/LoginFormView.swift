@@ -2,18 +2,26 @@ import SwiftUI
 
 struct LoginFormView: View {
     @Bindable var authController = AuthController()
+    @State private var showSplash: Bool = true // State to control the splash screen visibility
 
     var body: some View {
-        NavigationView{
+        if showSplash {
+            SplashScreen(showSplash: $showSplash)
+        } else {
+            mainLoginFormView
+        }
+    }
+
+    var mainLoginFormView: some View {
+        NavigationView {
             VStack(alignment: .leading, spacing: 15) {
                 Image("applogo")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 200, height: 200) // Adjusted for better proportionality
+                    .frame(width: 200, height: 200)
                     .padding(.horizontal, 90)
 
                 HStack {
-
                     Spacer()
                     Text("Hey There!")
                         .font(.largeTitle)
@@ -35,6 +43,7 @@ struct LoginFormView: View {
                         )
                     Spacer()
                 }
+
                 HStack(alignment: .center, spacing: 8) {
                     Image(systemName: "envelope")
                         .foregroundColor(Color("PrimaryColor"))
@@ -47,16 +56,17 @@ struct LoginFormView: View {
                         .cornerRadius(10)
                 }
 
-                HStack(alignment: .center, spacing: 8) { // Adjust spacing if needed
+                HStack(alignment: .center, spacing: 8) {
                     Image(systemName: "key")
                         .foregroundColor(Color("PrimaryColor"))
-                        .padding(.horizontal,5)
+                        .padding(.horizontal, 5)
                     SecureField("Enter your password", text: $authController.userPassword)
                         .textContentType(.password)
                         .padding()
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(10)
                 }
+
                 Button(action: {
                     Task {
                         await authController.login()
@@ -91,11 +101,12 @@ struct LoginFormView: View {
                 }
                 .padding(.top, 20)
                 .disabled(authController.userEmail.isEmpty || authController.userPassword.isEmpty)
+                
                 HStack {
                     Spacer()
                     Text("New User?")
                         .font(.subheadline)
-                        .foregroundColor(screenPrimaryColor)
+                        .foregroundColor(.gray)
                     
                     NavigationLink(destination: RegistrationFormView()) {
                         Text("Sign Up here")
@@ -118,6 +129,53 @@ struct LoginFormView: View {
     }
 }
 
-#Preview {
-    LoginFormView()
+struct SplashScreen: View {
+    @Binding var showSplash: Bool
+    @State private var size = 0.8
+    @State private var opacity = 0.5
+
+    let primaryColor = Color(red: 155 / 255, green: 39 / 255, blue: 90 / 255)
+    let secondaryColor = Color(red: 254 / 255, green: 211 / 255, blue: 231 / 255)
+
+    var body: some View {
+        VStack {
+            Spacer()
+            VStack {
+                Image("logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                    .scaleEffect(size)
+                    .opacity(opacity)
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+                            size = 1.1
+                            opacity = 1.0
+                        }
+                    }
+
+                Text("Pawfect!") // Change the text to your app name if different
+                    .font(.largeTitle)
+                    .fontWeight(.medium)
+                    .foregroundColor(primaryColor)
+                    .padding(.top, 10)
+            }
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(secondaryColor.ignoresSafeArea())
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                withAnimation {
+                    showSplash = false
+                }
+            }
+        }
+    }
+}
+
+struct LoginFormView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginFormView()
+    }
 }

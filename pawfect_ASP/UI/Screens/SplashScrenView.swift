@@ -5,7 +5,6 @@
 ////  Created by Kavya Varshini Anburasu on 19/11/24.
 ////
 //
-//
 //import SwiftUI
 //
 //struct SplashScreenView: View {
@@ -18,14 +17,14 @@
 //
 //    var body: some View {
 //        if isActive {
-//            DatingMainScreenView() // Navigates to main app view
+//            DatingMainScreenView() // Navigates to the main app view
 //        } else {
 //            VStack {
 //                Spacer()
 //
 //                // Logo and app name
 //                VStack {
-//                    Image("logo") //
+//                    Image("logo") // Ensure your project contains an image asset named 'logo'
 //                        .resizable()
 //                        .scaledToFit()
 //                        .frame(width: 200, height: 200)
@@ -50,7 +49,7 @@
 //            .frame(maxWidth: .infinity, maxHeight: .infinity)
 //            .background(secondaryColor.ignoresSafeArea())
 //            .onAppear {
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // Changed from 3 to 2 seconds
 //                    withAnimation {
 //                        isActive = true
 //                    }

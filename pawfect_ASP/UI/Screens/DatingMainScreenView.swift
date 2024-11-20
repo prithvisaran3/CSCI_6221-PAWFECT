@@ -2,29 +2,39 @@ import SwiftUI
 
 struct DatingMainScreenView: View {
     @StateObject var homeController = HomeController()
+      @State private var showAlert: Bool = false
+      @State private var swipeDirection: String = ""
+      @State private var noMoreCards: Bool = false
+      @State private var showSplash: Bool = true // State to control splash screen visibility
 
-    @State private var showAlert: Bool = false
-    @State private var swipeDirection: String = ""
-    @State private var noMoreCards: Bool = false
+      var body: some View {
+          if showSplash {
+              SplashScreenView(showSplash: $showSplash)
+            
+          } else {
+              mainContentView
+          }
+      }
 
-    var body: some View {
-        ZStack {
-            Color(screenSecondaryColor).opacity(0.5).edgesIgnoringSafeArea(.all) // Background color
-            VStack(alignment: .center) {
-                if noMoreCards {
-                    noMoreCardsView()
-                } else {
-                    cardsView()
-                    likeDislikeButtons()
-                }
-            }
-            .onAppear {
-                Task {
-                    await homeController.fetchAllPets()
-                }
-            }
-        }
-    }
+      // The main content of DatingMainScreenView
+      private var mainContentView: some View {
+          ZStack {
+              Color.gray.opacity(0.1).edgesIgnoringSafeArea(.all) // Background color
+              VStack(alignment: .center) {
+                  if noMoreCards {
+                      noMoreCardsView()
+                  } else {
+                      cardsView()
+                      likeDislikeButtons()
+                  }
+              }
+              .onAppear {
+                  Task {
+                      await homeController.fetchAllPets()
+                  }
+              }
+          }
+      }
     
     // Separate view for when no more cards are available
     private func noMoreCardsView() -> some View {
@@ -65,6 +75,49 @@ struct DatingMainScreenView: View {
             noMoreCards: $noMoreCards,
             index: 0 // This targets the first card
         )
+    }
+}
+
+struct SplashScreenView: View {
+    @Binding var showSplash: Bool
+    @State private var size = 0.8
+    @State private var opacity = 0.5
+
+    let primaryColor = Color(red: 155 / 255, green: 39 / 255, blue: 90 / 255)
+    let secondaryColor = Color(red: 254 / 255, green: 211 / 255, blue: 231 / 255)
+
+    var body: some View {
+        VStack {
+            Spacer()
+
+            // Logo and app name
+            VStack {
+                Image("logo") // Ensure your project contains an image asset named 'logo'
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                    .scaleEffect(size)
+                    .opacity(opacity)
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+                            size = 1.1
+                            opacity = 1.0
+                        }
+                    }
+                
+            }
+
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(secondaryColor.ignoresSafeArea())
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                withAnimation {
+                    showSplash = false
+                }
+            }
+        }
     }
 }
 
