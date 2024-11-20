@@ -105,7 +105,7 @@ struct DatingMainCardView_Previews: PreviewProvider {
     static var previews: some View {
         @State var noMoreCards = false
         @State var remainingCards: [PetProfile] = [
-            PetProfile(id: "1", dogName: "Yeontan", dogBreed: "Labrador Retriever", dogAge: "2", dogGender: "Male", ownerName: "John Doe", petBio: "Friendly and loves to play!", avatarURL: "dog")
+            PetProfile(id: "1", dogName: "Yeontan", dogBreed: "Labrador Retriever", dogAge: "2", dogGender: "Male", ownerName: "John Doe", petBio: "Friendly and loves to play!", image1: "dog")
         ]
         @State var showAlert = false
         @State var swipeDirection = ""
