@@ -3,139 +3,65 @@ import PhotosUI
 
 struct ChatView: View {
     let pet: Pet
-    @State private var messages: [Message] = [
-        Message(content: "Hey! Wanna meet at the park?", isSentByUser: false),
-        Message(content: "Sure! What time?", isSentByUser: true)
-    ]
-    @State private var messageText = ""
-    @State private var showPhotoPicker = false
-    @State private var selectedImage: UIImage?
-    @State private var chatController = ChatController()
-    
-//    @State private var matchController = MatchController()
-    var body: some View {
-        
-        VStack {
-            // Header Section
-            HStack {
-                Image(pet.imageName)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color("PrimaryColor"), lineWidth: 1))
-                
-                Text(pet.name)
-                    .font(.title2)
-                    .foregroundColor(Color("PrimaryColor"))
-                
-                Spacer()
-            }
-            .padding()
+    @State private var scale: CGFloat = 0.8
+    @State private var opacity: Double = 0.5
+    @Namespace private var animation
 
-            // Messages Section
-            ScrollView {
-                VStack(spacing: 10) {
-                    ForEach(messages) { message in
-                        HStack {
-                            if message.isSentByUser {
-                                Spacer()
-                                if let image = message.image {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(maxWidth: 150, maxHeight: 150)
-                                        .cornerRadius(15)
-                                        .padding(.trailing, 10)
-                                } else {
-                                    Text(message.content ?? "")
-                                        .padding()
-                                        .background(Color("PrimaryColor"))
-                                        .foregroundColor(.white)
-                                        .cornerRadius(15)
-                                        .frame(maxWidth: 250, alignment: .trailing)
-                                        .padding(.trailing, 10)
-                                }
-                            } else {
-                                if let image = message.image {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(maxWidth: 150, maxHeight: 150)
-                                        .cornerRadius(15)
-                                        .padding(.leading, 10)
-                                } else {
-                                    Text(message.content ?? "")
-                                        .padding()
-                                        .background(Color("SecondaryColor"))
-                                        .foregroundColor(.black)
-                                        .cornerRadius(15)
-                                        .frame(maxWidth: 250, alignment: .leading)
-                                        .padding(.leading, 10)
-                                }
-                                Spacer()
-                            }
-                        }
+    // Improved color palette with gradient
+    var primaryGradient = LinearGradient(gradient: Gradient(colors: [Color(red: 155 / 255, green: 39 / 255, blue: 90 / 255), Color(red: 195 / 255, green: 55 / 255, blue: 100 / 255)]), startPoint: .top, endPoint: .bottom)
+    let secondaryColor = Color(red: 254 / 255, green: 211 / 255, blue: 231 / 255)
+
+    var body: some View {
+        VStack {
+            // Animated image with interactive scaling and fading
+            Image(pet.imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 400, height: 400) // Adjusted for better proportionality
+                .scaleEffect(scale)
+                .opacity(opacity)
+                .onTapGesture {
+                    withAnimation(.easeInOut(duration: 0.8)) {
+                        scale = scale == 0.8 ? 1.0 : 0.8
+                        opacity = opacity == 0.5 ? 1.0 : 0.5
                     }
                 }
-            }
-            .background(Color.white)
-            .padding(.top)
+                .padding(.top, 30)
 
-            // Input Section
-            HStack {
-                // Attach Button
-                Button(action: { showPhotoPicker.toggle() }) {
-                    Image(systemName: "paperclip")
-                        .foregroundColor(Color("PrimaryColor"))
-                        .padding()
-                        .background(Color("SecondaryColor").opacity(0.3))
-                        .clipShape(Circle())
-                }
+            // Contact details section with smooth transition
+            Text("Contact Details")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundStyle(primaryGradient)
+                .padding(.top, 10)
+                .transition(.opacity)
+                .animation(.easeIn(duration: 1.0), value: opacity)
+//
+//            Spacer(minLength: 20)
 
-                // TextField
-                TextField("Type a message...", text: $messageText)
-                    .padding()
-                    .background(Color("SecondaryColor").opacity(0.3))
-                    .cornerRadius(20)
+            // Pet name with refined animation
+            Text(pet.name)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundStyle(primaryGradient)
+                .matchedGeometryEffect(id: "petName", in: animation)
+                .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity),
+                                        removal: .move(edge: .trailing).combined(with: .opacity)))
+                .animation(.spring(), value: scale)
 
-                // Send Button
-                Button(action: sendMessage) {
-                    Image(systemName: "paperplane.fill")
-                        .foregroundColor(Color("PrimaryColor"))
-                        .padding()
-                        .background(Color("SecondaryColor"))
-                        .clipShape(Circle())
-                }
-            }
-            .padding()
-            .background(Color.white)
+//            Spacer(minLength: 20)
+
+            // Pet phone with dynamic scaling
+            Text(pet.phone)
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundStyle(primaryGradient)
+                .scaleEffect(scale)
+                .animation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.5), value: scale)
         }
-        .onAppear {
-                   Task {
-                       await chatController.fetchChatData()  // Fetch chat history
-                   }
-               }
-        .background(Color.white.ignoresSafeArea())
-        .navigationTitle("")
-        .navigationBarHidden(true)
-        .sheet(isPresented: $showPhotoPicker) {
-            PhotoPicker(selectedImage: $selectedImage, onImagePicked: handleImagePicked)
-        }
-    }
-
-    // Handle sending a text message
-    func sendMessage() {
-        if !messageText.isEmpty {
-            messages.append(Message(content: messageText, isSentByUser: true))
-            messageText = ""
-        }
-    }
-
-    // Handle adding an image to the chat
-    func handleImagePicked(image: UIImage?) {
-        if let image = image {
-            messages.append(Message(image: image, isSentByUser: true))
-        }
+        .padding(.horizontal)
+        .background(secondaryColor)
+        .cornerRadius(20)
+        .shadow(radius: 10)
     }
 }
