@@ -45,7 +45,7 @@ struct DatingMainScreenView: View {
                     age: Int(homeController.petProfiles[index].dogAge ?? "0") ?? 0,
                     gender: homeController.petProfiles[index].dogGender ?? "Unknown Gender",
                     currentImageIndex: 0,
-                    imageNames: [homeController.petProfiles[index].avatarURL ?? "pawprint.fill"],
+                    imageNames:  [homeController.petProfiles[index].image1 ?? "", homeController.petProfiles[index].image2 ?? "", homeController.petProfiles[index].image3 ?? "", homeController.petProfiles[index].image4 ?? ""],
                     noMoreCards: $noMoreCards,
                     remainingCards: $homeController.petProfiles,
                     showAlert: $showAlert,

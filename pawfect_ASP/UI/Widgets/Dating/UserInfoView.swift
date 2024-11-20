@@ -64,7 +64,7 @@ struct UserInfoView: View {
         }
             .background(
              LinearGradient(
-                gradient: Gradient(colors: [Color.black, Color.clear]),
+                gradient: Gradient(colors: [Color.black, Color.black]),
                 startPoint: .bottom,
                 endPoint: .top
             )

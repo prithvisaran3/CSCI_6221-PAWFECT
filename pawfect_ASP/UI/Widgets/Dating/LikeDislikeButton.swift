@@ -73,7 +73,8 @@ struct LikeDislikeButton_Previews: PreviewProvider {
                 dogGender: "Male",
                 ownerName: "John Doe",
                 petBio: "Friendly and loves to play!",
-                avatarURL: "dog"
+//                /*avatarURL*/: "dog"
+                image1: "dog"
             )
         ]
         @State var noMoreCards = false
