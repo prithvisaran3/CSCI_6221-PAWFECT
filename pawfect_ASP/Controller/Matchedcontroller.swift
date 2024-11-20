@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Supabase
 @MainActor
-class ChatController: ObservableObject {
+class MatchedListController: ObservableObject {
     // Properties to hold the user data
     @Published var ids = [String]()
     @Published var created_ats = [String]()
@@ -17,17 +17,18 @@ class ChatController: ObservableObject {
     @Published var user_1_responses = [Bool]()
     @Published var user_ids_2 = [String]()
     @Published var user_2_responses = [Bool]()
-    @Published var chat_histories = [[ChatEntry]]()
+//    @Published var chat_histories = [[ChatEntry]]()
     
     @Published var name = [String]()
     @Published var img = [String]()
-    func fetchChatData() async {
+    func fetchMatchedData() async {
         do {
-            let responses: [ChatHistory] = try await supabase
+            let responses: [MatchDetails] = try await supabase
                 .from("chat_history")
                 .select()
-                .eq("user_id_1", value: "447ac8a8-c0ea-4cf6-ba93-4b7d67d41e3f")
-                .eq("user_id_2", value: "7c6a44fd-c6f2-4792-b986-bde059fe4f6c")
+                .eq("user_id_1", value: "2739ef29-a1f5-4427-890e-e7a6d128fdcc")
+                .eq("user_1_response", value: true)
+                .eq("user_2_response", value: true)
                 .execute()
                 .value
 
@@ -38,7 +39,7 @@ class ChatController: ObservableObject {
             user_1_responses.removeAll()
             user_ids_2.removeAll()
             user_2_responses.removeAll()
-            chat_histories.removeAll()
+//            chat_histories.removeAll()
 
             // Iterate over each response and update the properties
             for record in responses {
@@ -48,17 +49,17 @@ class ChatController: ObservableObject {
                 user_1_responses.append(record.userId1response ?? false)
                 user_ids_2.append(record.userId2 ?? "")
                 user_2_responses.append(record.userId2response ?? false)
-                chat_histories.append(record.chathistory ?? [])
+//                chat_histories.append(record.chathistory ?? [])
                 
-               
-                                debugPrint("id: \(record.id ?? "")")
-                                debugPrint("created at: \(record.createdAt ?? "")")
-                                debugPrint("User ID 1: \(record.userId1 ?? "") - Response: \(record.userId1response ?? false)")
-                debugPrint("User ID 2: \(record.userId2 ?? "") - Response: \(record.userId2response ?? false)")
-                                debugPrint("Chat history count: \(record.chathistory?.count ?? 0)")
-                                for entry in record.chathistory ?? [] {
-                                    debugPrint("Chat Entry - User 1: \(entry.user_1 ?? ""), User 2: \(entry.user_2 ?? "")")
-                                }
+                // Debug print statements
+                //                debugPrint("id: \(record.id ?? "")")
+                //                debugPrint("created at: \(record.createdAt ?? "")")
+                //                debugPrint("User ID 1: \(record.userId1 ?? "") - Response: \(record.userId1response ?? false)")
+                //debugPrint("User ID 2: \(record.userId2 ?? "") - Response: \(record.userId2response ?? false)")
+                //                debugPrint("Chat history count: \(record.chathistory?.count ?? 0)")
+                //                for entry in record.chathistory ?? [] {
+                //                    debugPrint("Chat Entry - User 1: \(entry.user_1 ?? ""), User 2: \(entry.user_2 ?? "")")
+                //                }
                 
                 
                 
@@ -72,14 +73,14 @@ class ChatController: ObservableObject {
     
 }
 
-struct ChatHistory: Decodable, Encodable {
+struct MatchDetails: Decodable, Encodable {
     let id: String?
     let createdAt: String?
     let userId1: String?
     let userId1response: Bool?
     let userId2: String?
     let userId2response: Bool?
-    var chathistory: [ChatEntry]?
+//    var chathistory: [ChatEntry]?
     
     var name : String?
 
@@ -90,12 +91,12 @@ struct ChatHistory: Decodable, Encodable {
         case userId1response = "user_1_response"
         case userId2 = "user_id_2"
         case userId2response = "user_2_response"
-        case chathistory = "chat_history"
-        case name = "name"
+//        case chathistory = "chat_history"
+//        case name = "name"
     }
 }
 
-struct ChatEntry: Decodable, Encodable {
-    var user_1: String?
-    var user_2: String?
-}
+//struct ChatEntry: Decodable, Encodable {
+//    var user_1: String?
+//    var user_2: String?
+//}
