@@ -116,7 +116,7 @@ struct ProfileView: View {
 
                 Spacer()
             }
-            .background(secondaryColor.ignoresSafeArea())
+            .background(secondaryColor.opacity(0.5).ignoresSafeArea())
             .navigationBarHidden(true)
             .onAppear {
                 Task {

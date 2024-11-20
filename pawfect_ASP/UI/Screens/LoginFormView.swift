@@ -92,6 +92,7 @@ struct LoginFormView: View {
                 .padding(.top, 20)
                 .disabled(authController.userEmail.isEmpty || authController.userPassword.isEmpty)
                 HStack {
+                    Spacer()
                     Text("New User?")
                         .font(.subheadline)
                         .foregroundColor(screenPrimaryColor)
@@ -102,6 +103,7 @@ struct LoginFormView: View {
                             .foregroundColor(.blue)
                             .bold()
                     }
+                    Spacer()
                 }
             }
             .padding()

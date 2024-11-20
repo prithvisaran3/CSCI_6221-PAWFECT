@@ -63,11 +63,16 @@ struct UserInfoView: View {
             }
         }
             .background(
-             LinearGradient(
-                gradient: Gradient(colors: [Color.black, Color.black]),
-                startPoint: .bottom,
-                endPoint: .top
-            )
+                ZStack {
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color.black,Color.black, Color.clear]),
+                        startPoint: .bottom,
+                        endPoint: .top
+                    )
+                    .offset(y: -50) // Adjust the offset here
+                }
+                .frame(height: 200) // Set the frame to see the gradient effect
+
         )
 
     }
