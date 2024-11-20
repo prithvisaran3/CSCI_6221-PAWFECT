@@ -26,8 +26,8 @@ struct NavigationContainerView: View {
                 ChatListView()
             }
             .tabItem {
-                Image(systemName: "message.fill")
-                Text("Chats")
+                Image(systemName: "heart.fill")
+                Text("Match")
             }
             .tag(Tab.chats)
             NavigationView {

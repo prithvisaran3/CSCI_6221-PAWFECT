@@ -4,7 +4,7 @@ import PhotosUI
 struct ChatView: View {
     let pet: Pet
     @State private var scale: CGFloat = 0.8
-    @State private var opacity: Double = 0.5
+    @State private var opacity: Double = 1
     @Namespace private var animation
 
     // Improved color palette with gradient
@@ -32,7 +32,8 @@ struct ChatView: View {
             Text("Contact Details")
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundStyle(primaryGradient)
+                .foregroundColor(Color.black)
+//                .foregroundStyle(primaryGradient)
                 .padding(.top, 10)
                 .transition(.opacity)
                 .animation(.easeIn(duration: 1.0), value: opacity)
@@ -42,8 +43,9 @@ struct ChatView: View {
             // Pet name with refined animation
             Text(pet.name)
                 .font(.title2)
-                .fontWeight(.bold)
+                .fontWeight(.semibold)
                 .foregroundStyle(primaryGradient)
+                .foregroundColor(Color.black)
                 .matchedGeometryEffect(id: "petName", in: animation)
                 .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity),
                                         removal: .move(edge: .trailing).combined(with: .opacity)))
@@ -54,7 +56,7 @@ struct ChatView: View {
             // Pet phone with dynamic scaling
             Text(pet.phone)
                 .font(.title)
-                .fontWeight(.bold)
+                .fontWeight(.semibold)
                 .foregroundStyle(primaryGradient)
                 .scaleEffect(scale)
                 .animation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.5), value: scale)

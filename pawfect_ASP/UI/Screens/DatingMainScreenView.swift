@@ -19,7 +19,7 @@ struct DatingMainScreenView: View {
       // The main content of DatingMainScreenView
       private var mainContentView: some View {
           ZStack {
-              Color.gray.opacity(0.1).ignoresSafeArea()// Background color
+              Color(screenSecondaryColor).opacity(0.5).ignoresSafeArea()// Background color
               VStack(alignment: .center) {
                   if noMoreCards {
                       noMoreCardsView()
@@ -52,7 +52,11 @@ struct DatingMainScreenView: View {
                 DatingMainCardView(
                     dogName: homeController.petProfiles[index].dogName ?? "Unknown",
                     dogBreed: homeController.petProfiles[index].dogBreed ?? "Unknown Breed",
+                    dogBio: homeController.petProfiles[index].petBio ?? "No bio, swipe right",
+                    ownerName: homeController.petProfiles[index].ownerName ?? "Unknown Owner",
                     age: Int(homeController.petProfiles[index].dogAge ?? "0") ?? 0,
+                    
+                    
                     gender: homeController.petProfiles[index].dogGender ?? "Unknown Gender",
                     currentImageIndex: 0,
                     imageNames:  [homeController.petProfiles[index].image1 ?? "", homeController.petProfiles[index].image2 ?? "", homeController.petProfiles[index].image3 ?? "", homeController.petProfiles[index].image4 ?? ""],

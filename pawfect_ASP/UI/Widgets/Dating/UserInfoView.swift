@@ -13,15 +13,26 @@ struct UserInfoView: View {
     @State var dogBreed: String
     @State var age: Int
     @State var gender: String
-    init(dogName: String, dogBreed: String, age: Int, gender: String) {
+    @State var bio: String
+    @State var ownerName: String
+    init(dogName: String, dogBreed: String, age: Int, gender: String,bio: String,ownerName: String) {
         self.dogName = dogName
         self.dogBreed = dogBreed
         self.age = age
         self.gender = gender
+        self.bio = bio
+        self.ownerName = ownerName
     }
     var body: some View {
         HStack(alignment: .center, spacing: 10){
             VStack(alignment: .leading) {
+                HStack{
+                    Text("Owner : \(ownerName)")
+                        .font(.system(size: 10))
+                        .foregroundColor(.white)
+                        .lineLimit(3)
+                    Spacer()
+                }
                 HStack{
                     Text(dogName)
                         .font(.system(size: 28, weight: .bold))
@@ -38,6 +49,13 @@ struct UserInfoView: View {
                 HStack{
                     Text(dogBreed)
                         .font(.system(size: 22))
+                        .foregroundColor(.white)
+                        .lineLimit(3)
+                    Spacer()
+                }
+                HStack{
+                    Text(bio)
+                        .font(.system(size: 16))
                         .foregroundColor(.white)
                         .lineLimit(3)
                     Spacer()
@@ -71,7 +89,7 @@ struct UserInfoView: View {
                     )
                     .offset(y: -50) // Adjust the offset here
                 }
-                .frame(height: 200) // Set the frame to see the gradient effect
+                .frame(height: 250) // Set the frame to see the gradient effect
 
         )
 
@@ -79,6 +97,6 @@ struct UserInfoView: View {
 }
 #Preview {
     UserInfoView(
-        dogName: "Yeontan", dogBreed: "Labrador Retriever", age: 22, gender: "Female"
+        dogName: "Yeontan", dogBreed: "Labrador Retriever", age: 22, gender: "Female",bio: "Hey",ownerName: "Me"
     )
 }
