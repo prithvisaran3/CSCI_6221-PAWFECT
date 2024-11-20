@@ -26,8 +26,9 @@ class ChatController: ObservableObject {
             let responses: [ChatHistory] = try await supabase
                 .from("chat_history")
                 .select()
-                .eq("user_id_1", value: "447ac8a8-c0ea-4cf6-ba93-4b7d67d41e3f")
-                .eq("user_id_2", value: "7c6a44fd-c6f2-4792-b986-bde059fe4f6c")
+                .eq("user_id_1", value: "2739ef29-a1f5-4427-890e-e7a6d128fdcc")
+                .eq("user_id_2", value: "2739ef29-a1f5-4427-890e-e7a6d128fdcc")
+                .eq("user_2_response", value: true)
                 .execute()
                 .value
 
@@ -50,15 +51,15 @@ class ChatController: ObservableObject {
                 user_2_responses.append(record.userId2response ?? false)
                 chat_histories.append(record.chathistory ?? [])
                 
-               
-                                debugPrint("id: \(record.id ?? "")")
-                                debugPrint("created at: \(record.createdAt ?? "")")
-                                debugPrint("User ID 1: \(record.userId1 ?? "") - Response: \(record.userId1response ?? false)")
-                debugPrint("User ID 2: \(record.userId2 ?? "") - Response: \(record.userId2response ?? false)")
-                                debugPrint("Chat history count: \(record.chathistory?.count ?? 0)")
-                                for entry in record.chathistory ?? [] {
-                                    debugPrint("Chat Entry - User 1: \(entry.user_1 ?? ""), User 2: \(entry.user_2 ?? "")")
-                                }
+                // Debug print statements
+                //                debugPrint("id: \(record.id ?? "")")
+                //                debugPrint("created at: \(record.createdAt ?? "")")
+                //                debugPrint("User ID 1: \(record.userId1 ?? "") - Response: \(record.userId1response ?? false)")
+                //debugPrint("User ID 2: \(record.userId2 ?? "") - Response: \(record.userId2response ?? false)")
+                //                debugPrint("Chat history count: \(record.chathistory?.count ?? 0)")
+                //                for entry in record.chathistory ?? [] {
+                //                    debugPrint("Chat Entry - User 1: \(entry.user_1 ?? ""), User 2: \(entry.user_2 ?? "")")
+                //                }
                 
                 
                 

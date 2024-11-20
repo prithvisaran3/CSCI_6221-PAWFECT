@@ -10,12 +10,12 @@ import SwiftData
 
 @main
 struct pawfect_ASPApp: App {
-    var body: some Scene {
-        WindowGroup {
-            SplashScreenView()
-        }
-    }
-}
+    //    var body: some Scene {
+    //        WindowGroup {
+    //            SplashScreenView()
+    //        }
+    //    }
+    //}
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -32,18 +32,19 @@ struct pawfect_ASPApp: App {
             
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+        
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
         .modelContainer(sharedModelContainer)
     }
-
+    
+}

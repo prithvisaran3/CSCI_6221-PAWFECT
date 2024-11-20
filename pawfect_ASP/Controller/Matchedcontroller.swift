@@ -25,10 +25,11 @@ class MatchedListController: ObservableObject {
         do {
             let responses: [MatchDetails] = try await supabase
                 .from("chat_history")
-                .select()
+                .select("user_id_2, users!inner(dog_name, dog_pic1)")
                 .eq("user_id_1", value: "2739ef29-a1f5-4427-890e-e7a6d128fdcc")
                 .eq("user_1_response", value: true)
                 .eq("user_2_response", value: true)
+                .eq("chat_history.user_id_1", value:"users.id")
                 .execute()
                 .value
 
