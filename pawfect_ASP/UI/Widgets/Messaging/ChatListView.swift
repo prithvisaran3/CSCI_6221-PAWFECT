@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ChatListView: View {
     
-    @State private var matchedController = MatchedUsersController()
     
     let pets = [
         Pet(name: "Mona", imageName: "dog", phone: "7038983773"),
