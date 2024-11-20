@@ -16,6 +16,7 @@ struct Profile : Decodable, Encodable{
     let phoneNumber: String?
     let website: String?
     let avatarURL: String?
+    let petBio: String?
     
     enum CodingKeys: String, CodingKey {
         case dogName="dog_name"
@@ -26,5 +27,6 @@ struct Profile : Decodable, Encodable{
         case phoneNumber="phone_number"
         case website
         case avatarURL = "avatar_url"
+        case petBio = "pet_bio"
     }
 }

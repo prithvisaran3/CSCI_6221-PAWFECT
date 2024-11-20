@@ -18,6 +18,7 @@ class ProfileController{
     var dogAge = ""
     var dogGender = ""
     var phoneNumber = ""
+    var petBio = ""
     var address = ""
     var pinCode = ""
     var website = ""
@@ -51,6 +52,7 @@ class ProfileController{
             phoneNumber = profile.phoneNumber ?? ""
             website = profile.website ?? ""
             id = currentUser.id.uuidString
+            petBio = profile.petBio ?? ""
             
             if let avatarURL = profile.avatarURL, !avatarURL.isEmpty{
                 try await downloadImage(path: avatarURL)
@@ -73,7 +75,7 @@ class ProfileController{
                 
                 let currentUser =   try await supabase.auth.session.user
                 
-                let updatedProfile = Profile(dogName: dogName, dogBreed: dogBreed, dogAge: dogAge, dogGender: dogGender, ownerName: ownerName, phoneNumber: phoneNumber, website: website, avatarURL: imageURL)
+                let updatedProfile = Profile(dogName: dogName, dogBreed: dogBreed, dogAge: dogAge, dogGender: dogGender, ownerName: ownerName, phoneNumber: phoneNumber, website: website, avatarURL: imageURL,petBio: petBio)
                 
                 try await supabase.from("profiles")
                     .update(updatedProfile)

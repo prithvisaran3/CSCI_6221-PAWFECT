@@ -75,9 +75,7 @@ struct ProfileView: View {
                         petBreed: profileController.dogBreed,
                         petAge: profileController.dogAge,
                         petGender: profileController.dogGender,
-                        petDescription: """
-                        Charlie  loves to play fetch, go on long walks, and spend time with his family. Charlie has a gentle personality and is great with kids, making him a perfect companion.
-                        """
+                        petDescription: profileController.petBio
                     )) {
                         PetCardView(petName: profileController.dogName, petBreed: profileController.dogBreed, backgroundColor: primaryColor)
                             .frame(width: 250, height: 300)
@@ -174,6 +172,7 @@ struct PetDetailView: View {
     let petImages: [String] = ["dog1", "dog2", "dog3", "dog4"] // Replace with actual image names
 
     var body: some View {
+        ScrollView{
         VStack(spacing: 20) {
             // Pet's Name
             Text(petName)
@@ -181,11 +180,11 @@ struct PetDetailView: View {
                 .fontWeight(.bold)
                 .foregroundColor(primaryColor)
                 .padding(.top, 20)
-
+            
             // Animated Pet Sticker
             AnimatedPetSticker()
                 .frame(width: 150, height: 150)
-
+            
             // Pet Details Section
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
@@ -197,7 +196,7 @@ struct PetDetailView: View {
                         .font(.subheadline)
                         .foregroundColor(.black)
                 }
-
+                
                 HStack {
                     Text("Age:")
                         .font(.headline)
@@ -207,7 +206,7 @@ struct PetDetailView: View {
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
-
+                
                 HStack {
                     Text("Gender:")
                         .font(.headline)
@@ -220,14 +219,14 @@ struct PetDetailView: View {
             }
             .padding(.horizontal, 20)
             .padding(.top, 10)
-
+            
             // "Your Pet's Pictures" Section
             VStack(alignment: .leading, spacing: 10) {
                 Text("Your Pet's Pictures")
                     .font(.headline)
                     .foregroundColor(primaryColor)
                     .padding(.horizontal, 30)
-
+                
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 15) {
                         ForEach(petImages.prefix(4), id: \.self) { imageName in
@@ -254,14 +253,14 @@ struct PetDetailView: View {
                 }
             }
             .padding(.top, 10)
-
+            
             // "About the Pet" Section
             VStack(alignment: .leading, spacing: 10) {
                 Text("About \(petName)")
                     .font(.headline)
                     .foregroundColor(primaryColor)
                     .padding(.horizontal, 20)
-
+                
                 Text(petDescription)
                     .font(.body)
                     .foregroundColor(.black)
@@ -270,9 +269,10 @@ struct PetDetailView: View {
                     .padding(.horizontal, 20)
             }
             .padding(.top, 10)
-
+            
             Spacer()
         }
+    }
         .background(secondaryColor.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Pet Details")
