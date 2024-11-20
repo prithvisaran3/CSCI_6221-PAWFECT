@@ -1,19 +1,12 @@
 import SwiftUI
 
 struct ChatListView: View {
+    @StateObject var chatController = HomeController() // Instantiate HomeController
     
-    
-    let pets = [
-        Pet(name: "Mona", imageName: "dog", phone: "7038983773"),
-        Pet(name: "Charlie", imageName: "Dog-1", phone: "7098983773"),
-        Pet(name: "Bella", imageName: "Dog-2", phone: "7038983773")
-    ]
-
     var body: some View {
         NavigationView {
             VStack {
                 Text("Matched!")
-                  //  .font(.largeTitle)
                     .bold()
                     .font(.custom("Andina Demo", size: 32))
                     .foregroundColor(Color("PrimaryColor"))
@@ -21,17 +14,33 @@ struct ChatListView: View {
 
                 ScrollView {
                     VStack(spacing: 20) {
-                        ForEach(pets) { pet in
-                            NavigationLink(destination: ChatView(pet: pet)) {
+                        ForEach(chatController.chatProfile) { pet in
+                            NavigationLink(destination: ChatView(pet: Pet(name: pet.dogName ?? "Unknown", imageName: pet.image1 ?? "placeholder", phone: pet.phoneNumber ?? "N/A"))) {
                                 HStack {
-                                    Image(pet.imageName)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 60, height: 60)
-                                        .clipShape(Circle())
-                                        .overlay(Circle().stroke(Color("PrimaryColor"), lineWidth: 2))
+                                    AsyncImage(url: URL(string: pet.image1 ?? "")) { phase in
+                                        switch phase {
+                                        case .empty:
+                                            ProgressView()
+                                        case .success(let image):
+                                            image
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 60, height: 60)
+                                                .clipShape(Circle())
+                                                .overlay(Circle().stroke(Color("PrimaryColor"), lineWidth: 2))
+                                        case .failure:
+                                            Image("placeholder")
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 60, height: 60)
+                                                .clipShape(Circle())
+                                                .overlay(Circle().stroke(Color("PrimaryColor"), lineWidth: 2))
+                                        @unknown default:
+                                            EmptyView()
+                                        }
+                                    }
                                     
-                                    Text(pet.name)
+                                    Text(pet.dogName ?? "Unknown")
                                         .font(.headline)
                                         .foregroundColor(Color("PrimaryColor"))
                                         .padding(.leading, 10)
@@ -47,6 +56,11 @@ struct ChatListView: View {
                     .padding()
                 }
             }
+            .onAppear {
+                Task {
+                    await chatController.matchChat()
+                }
+            }
             .background(Color.white.ignoresSafeArea())
         }
     }
@@ -56,7 +70,7 @@ struct Pet: Identifiable {
     let id = UUID()
     let name: String
     let imageName: String
-    let phone : String
+    let phone: String
 }
 
 struct ChatListView_Previews: PreviewProvider {

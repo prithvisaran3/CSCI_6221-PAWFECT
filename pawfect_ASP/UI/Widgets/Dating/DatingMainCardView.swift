@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct DatingMainCardView: View {
+    @StateObject var homeController = HomeController()
     @State private var degrees: Double = 0
     @State private var xOffset: Double = 0
     @State var dogName: String
@@ -86,7 +87,8 @@ extension DatingMainCardView {
             swipeDirection = "Right"
 
             // Check for the hardcoded ID match
-            if index < remainingCards.count, remainingCards[index].id == "bad325d7-9a1d-456a-a959-4fdca3ddc22a" {
+            if index < remainingCards.count, remainingCards[index].id == "2dbcfd65-71bc-4aa0-a0d8-cfb2b6ff75f7" {
+                homeController.matchUser = remainingCards[index].id
                 showAlert = true // Show alert only for specific ID
             }
         } else {
