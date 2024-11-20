@@ -24,6 +24,13 @@ struct DatingMainScreenView: View {
                 }
             }
         }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text(swipeDirection == "Right" ? "You found a Match!" : "Swipe action"),
+                message: Text(swipeDirection == "Right" ? "You have matched with a pet!" : "You swiped left!"),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
     
     // Separate view for when no more cards are available
@@ -52,6 +59,11 @@ struct DatingMainScreenView: View {
                     swipeDirection: $swipeDirection,
                     index: index
                 )
+                .onChange(of: swipeDirection) { oldValue, newValue in
+                    if newValue == "Right" || newValue == "Left" {
+                        handleSwipe(at: index, direction: newValue)
+                    }
+                }
             }
         }
     }
@@ -65,6 +77,26 @@ struct DatingMainScreenView: View {
             noMoreCards: $noMoreCards,
             index: 0 // This targets the first card
         )
+    }
+
+    // Function to handle swiping actions
+    private func handleSwipe(at index: Int, direction: String) {
+        guard index < homeController.petProfiles.count else { return }
+
+        let currentUserId = UUID() // This should be the logged-in user's ID.
+        let swipedUserId = UUID(uuidString: homeController.petProfiles[index].id) ?? UUID()
+
+        Task {
+            await homeController.handleSwipe(currentUserId: currentUserId, swipedUserId: swipedUserId, direction: direction)
+
+            // Remove the card after swipe action is performed.
+            if index < homeController.petProfiles.count {
+                homeController.petProfiles.remove(at: index)
+                if homeController.petProfiles.isEmpty {
+                    noMoreCards = true
+                }
+            }
+        }
     }
 }
 
